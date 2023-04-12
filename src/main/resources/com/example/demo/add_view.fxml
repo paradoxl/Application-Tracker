@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.demo.AddViewController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="553.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.AddViewController">
+   <children>
+      <Button layoutX="119.0" layoutY="369.0" mnemonicParsing="false" onAction="#saveBTNPRESS" text="Save" />
+      <Button layoutX="50.0" layoutY="369.0" mnemonicParsing="false" onAction="#backBTNPRESS" text="Back" />
+      <TextField fx:id="companyNameTXTFLD" layoutX="50.0" layoutY="57.0" promptText="Company Name" />
+      <ComboBox fx:id="dateCOMBO" layoutX="50.0" layoutY="132.0" prefWidth="150.0" promptText="Date Submitted" />
+      <TextField fx:id="statusTEXTFLD" layoutX="50.0" layoutY="210.0" promptText="Status" />
+      <TextArea fx:id="notesTXTAREA" layoutX="253.0" layoutY="51.0" prefHeight="478.0" prefWidth="471.0" wrapText="true" />
+      <Label layoutX="262.0" layoutY="27.0" text="Notes" />
+   </children>
 </AnchorPane>

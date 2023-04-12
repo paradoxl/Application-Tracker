@@ -1,19 +1,18 @@
 package com.example.demo;
 
-import javafx.application.Application;
+import java.util.Date;
 
 public class Applications {
     private int applicationID;
     private String companyName;
-    private String Date;
+    private Date date;
     private String Status;
     private String Notes;
 
 
-    public Applications(int applicationID, String companyName, String Date, String Status, String Notes){
-        this.applicationID = applicationID;
+    public Applications (String companyName, Date date, String Status, String Notes){
         this.companyName = companyName;
-        this.Date = Date;
+        this.date = date;
         this.Status = Status;
         this.Notes = Notes;
     }
@@ -35,11 +34,11 @@ public class Applications {
     }
 
     public void setDate(String date) {
-        Date = date;
+        date = date;
     }
 
-    public String getDate() {
-        return Date;
+    public Date getDate() {
+        return date;
     }
 
     public void setStatus(String status) {

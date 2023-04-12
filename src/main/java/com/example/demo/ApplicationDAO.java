@@ -3,9 +3,11 @@ package com.example.demo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class ApplicationDAO {
 
@@ -22,7 +24,7 @@ public class ApplicationDAO {
             String status = rs.getString("Status");
             String notes = rs.getString("Notes");
 
-            Applications input = new Applications(applicationID,companyName,"Test",status,notes);
+            Applications input = new Applications(companyName, Date.valueOf(LocalDate.now()),status,notes);
             applicationsList.add(input);
         }
 
