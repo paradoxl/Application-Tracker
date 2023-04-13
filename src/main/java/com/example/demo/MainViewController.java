@@ -7,32 +7,30 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
     @FXML
-    public TableView mainTableView;
+    public TableView<Applications> mainTableView;
     @FXML
-    public TableColumn applicationIDTC;
+    public TableColumn<?,?> applicationIDTC;
     @FXML
-    public TableColumn comapnyNameTC;
+    public TableColumn<?,?> comapnyNameTC;
     @FXML
-    public TableColumn dateTC;
+    public TableColumn<?,?> dateTC;
     @FXML
-    public TableColumn statusTC;
+    public TableColumn<?,?> statusTC;
     @FXML
-    public TableColumn notesTC;
+    public TableColumn<?,?> notesTC;
 
 
 
@@ -64,7 +62,27 @@ public class MainViewController implements Initializable {
         stage.show();
     }
 
-    public void deleteApplication(ActionEvent actionEvent) {
+    public void deleteApplication(ActionEvent actionEvent) throws SQLException, IOException {
+
+        int highLighted = mainTableView.getSelectionModel().getSelectedItem().getApplicationID();
+        Alert delete = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to Delete this application, ID Number: " + highLighted,ButtonType.YES, ButtonType.NO);
+        delete.showAndWait();
+        if (delete.getResult() == ButtonType.YES){
+            // delete query
+            String query = "DELETE FROM Applications WHERE ApplicationID = ?";
+            PreparedStatement ps = InitCon.connection.prepareStatement(query);
+            ps.setInt(1,highLighted);
+            ps.executeUpdate();
+
+            // Refresh the page
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("Main_View.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            stage.setTitle("Applicationsg");
+            stage.setScene(scene);
+            stage.show();
+        }
+
     }
 
     public void editApplication(ActionEvent actionEvent) {

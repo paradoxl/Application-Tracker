@@ -25,6 +25,7 @@ public class ApplicationDAO {
             String notes = rs.getString("Notes");
 
             Applications input = new Applications(companyName, Date.valueOf(LocalDate.now()),status,notes);
+            input.setApplicationID(applicationID);
             applicationsList.add(input);
         }
 
