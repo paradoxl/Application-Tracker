@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 //TODO: Possible additions add ability to track Outisde URL Username and password for each individual application.
+//TODO: Possible additions: add an automatic ghost after applicaiton is set to no response for a certain amount of time.
 public class MainViewController implements Initializable {
     @FXML
     public TableView<Applications> mainTableView;
@@ -37,6 +38,8 @@ public class MainViewController implements Initializable {
     public Label interviewLabel;
     @FXML
     public Label rejectionLabel;
+    @FXML
+    public Label ghostLabel;
 
 
     @SuppressWarnings("unchecked")
@@ -83,7 +86,7 @@ public class MainViewController implements Initializable {
         float reject = 0;
         for (Applications app : allApps){
             total++;
-            if(app.getStatus().equals("None")){
+            if(app.getStatus().equals("None") || app.getStatus().equals("Ghosted")){
                 noCall++;
             }
             if(app.getStatus().equals("Call Back")){
@@ -100,10 +103,12 @@ public class MainViewController implements Initializable {
         float callbackPercentage = (call/total) * 100;
         float InterviewPercentage = (interview/total) * 100;
         float RejectionPercentage = (reject/total) * 100;
+        float ghostPercentage = (noCall/total) * 100;
 
         callBackLabel.setText(String.format("%.0f%%",callbackPercentage));
         interviewLabel.setText(String.format("%.0f%%",InterviewPercentage));
         rejectionLabel.setText(String.format("%.0f%%",RejectionPercentage));
+        ghostLabel.setText(String.format("%.0f%%",ghostPercentage));
 
 
     }

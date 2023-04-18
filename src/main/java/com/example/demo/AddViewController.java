@@ -99,6 +99,7 @@ public class AddViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
        ObservableList<String> statusList = FXCollections.observableArrayList();
        statusList.add("None");
+       statusList.add("Ghosted");
        statusList.add("Call Back");
        statusList.add("Interview");
        statusList.add("Offer");
