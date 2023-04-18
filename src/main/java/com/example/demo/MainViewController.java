@@ -39,6 +39,9 @@ public class MainViewController implements Initializable {
 
     @SuppressWarnings("unchecked")
     @Override
+    /**
+     * This method will populate the main table and show as many active applications as the table has space.
+     */
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             ObservableList<Applications> applicationInputList = ApplicationDAO.getApplications();
@@ -55,6 +58,12 @@ public class MainViewController implements Initializable {
         }
 
     }
+
+    /**
+     * This method will show a breakdown of how the users applications are working.
+     * It will show percentages of callbacks and interviews based on how many applications are in the system.
+     * @throws SQLException
+     */
     public void manipulateStats() throws SQLException {
         //TODO: Create a method that will update the percentages based on callbacks and interviews.
         // Color code the values <25% == red >25>50 == yellow >50 == Green
@@ -79,6 +88,12 @@ public class MainViewController implements Initializable {
         }
 
     }
+
+    /**
+     * This method will bring the user to a page where they can add applications to the system.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void addApplication(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("add_view.fxml"));
         Scene scene = new Scene(loader.load());
@@ -88,6 +103,13 @@ public class MainViewController implements Initializable {
         stage.show();
     }
 
+    /**
+     * This method will remove the selected application from the program and database.
+     * Future iterations could possibly move this to a sepereate database for long term storage.
+     * @param actionEvent
+     * @throws SQLException
+     * @throws IOException
+     */
     public void deleteApplication(ActionEvent actionEvent) throws SQLException, IOException {
 
         int highLighted = mainTableView.getSelectionModel().getSelectedItem().getApplicationID();
@@ -111,21 +133,28 @@ public class MainViewController implements Initializable {
 
     }
 
+    /**
+     * This method will send the user to a page where they can edit the application details
+     * The method will bring in values and prepopulate the information for the currently selected application
+     * @param actionEvent
+     * @throws IOException
+     * @throws SQLException
+     */
     public void editApplication(ActionEvent actionEvent) throws IOException, SQLException {
-        Alert NothingSelected = new Alert(Alert.AlertType.ERROR, "You have no selected an Application to edit.", ButtonType.OK);
-        Applications selected = mainTableView.getSelectionModel().getSelectedItem();
-
-        if(selected == null){
+        try {
+            Applications selected = mainTableView.getSelectionModel().getSelectedItem();
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("edit_view.fxml"));
+            Scene scene = new Scene(loader.load());
+            editViewController helper = loader.getController();
+            helper.populate(selected);
+            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            stage.setTitle("Customer Records");
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch (NullPointerException e){
+            Alert NothingSelected = new Alert(Alert.AlertType.ERROR, "You have no selected an Application to edit.", ButtonType.OK);
             NothingSelected.showAndWait();
         }
-
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("edit_view.fxml"));
-        Scene scene = new Scene(loader.load());
-        editViewController helper = loader.getController();
-        helper.populate(selected);
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        stage.setTitle("Customer Records");
-        stage.setScene(scene);
-        stage.show();
     }
 }

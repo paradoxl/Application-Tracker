@@ -37,12 +37,12 @@ public class editViewController implements Initializable {
         if (continueSave.getResult() == ButtonType.YES) {
 
             //TODO: Update query has an error.
-            String query = "Update Applications Where ApplicationId = ? Set CompanyName = ? Status = ? Notes = ? ";
+            String query = "Update Applications Set CompanyName = ?, Status = ?, Notes = ? Where ApplicationId = ? ";
             PreparedStatement ps = InitCon.connection.prepareStatement(query);
-            ps.setInt(1, Integer.parseInt(idLabel.getText()));
-            ps.setString(2, companyNameTXTFLD.getText());
-            ps.setString(3, statusTEXTFLD.getText());
-            ps.setString(4, notesTXTAREA.getText());
+            ps.setInt(4, Integer.parseInt(idLabel.getText()));
+            ps.setString(1, companyNameTXTFLD.getText());
+            ps.setString(2, statusTEXTFLD.getText());
+            ps.setString(3, notesTXTAREA.getText());
             ps.executeUpdate();
 
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("Main_View.fxml"));
