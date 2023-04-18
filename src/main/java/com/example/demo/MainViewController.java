@@ -35,6 +35,8 @@ public class MainViewController implements Initializable {
     public Label callBackLabel;
     @FXML
     public Label interviewLabel;
+    @FXML
+    public Label rejectionLabel;
 
 
     @SuppressWarnings("unchecked")
@@ -43,6 +45,11 @@ public class MainViewController implements Initializable {
      * This method will populate the main table and show as many active applications as the table has space.
      */
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            manipulateStats();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         try {
             ObservableList<Applications> applicationInputList = ApplicationDAO.getApplications();
 
@@ -69,23 +76,35 @@ public class MainViewController implements Initializable {
         // Color code the values <25% == red >25>50 == yellow >50 == Green
 
         ObservableList<Applications> allApps = ApplicationDAO.getApplications();
-        int total = 0;
-        int noCall = 0;
-        int call = 0;
-        int interview = 0;
+        float total = 0;
+        float noCall = 0;
+        float call = 0;
+        float interview = 0;
+        float reject = 0;
         for (Applications app : allApps){
             total++;
             if(app.getStatus().equals("None")){
                 noCall++;
             }
-            if(app.getStatus().equals("Call")){
+            if(app.getStatus().equals("Call Back")){
                 call++;
             }
             if(app.getStatus().equals("Interview")){
                 interview++;
             }
+            if(app.getStatus().equals("Rejected")){
+                reject++;
+            }
 
         }
+        float callbackPercentage = (call/total) * 100;
+        float InterviewPercentage = (interview/total) * 100;
+        float RejectionPercentage = (reject/total) * 100;
+
+        callBackLabel.setText(String.format("%.0f%%",callbackPercentage));
+        interviewLabel.setText(String.format("%.0f%%",InterviewPercentage));
+        rejectionLabel.setText(String.format("%.0f%%",RejectionPercentage));
+
 
     }
 
