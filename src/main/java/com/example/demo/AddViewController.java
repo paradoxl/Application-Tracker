@@ -3,6 +3,7 @@ package com.example.demo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -15,17 +16,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
 
 public class AddViewController implements Initializable {
+    @FXML
     public TextField companyNameTXTFLD;
+    @FXML
     public ComboBox<Date> dateCOMBO;
-
+    @FXML
     public TextArea notesTXTAREA;
+    @FXML
     public ChoiceBox<String> statusChoice;
+    @FXML
+    public DatePicker datePicker;
+    @FXML
+    public TextField urlTextFLD;
+    @FXML
+    public TextField userNameTextFLD;
+    @FXML
+    public TextField passwordTextFLD;
 
     /**
      * This method will save documents to the mySQL database
@@ -38,21 +52,22 @@ public class AddViewController implements Initializable {
         Alert save = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to save this application", ButtonType.YES, ButtonType.NO);
         save.showAndWait();
 
-
+        //TODO: Date is showing correct values but does not actually display them in the table.
         if (save.getResult() == ButtonType.YES) {
             String name = companyNameTXTFLD.getText();
-//            Date date = (Date) dateCOMBO.getItems();
+            LocalDate date = datePicker.getValue();
+            System.out.println(datePicker.getValue());
             String status = statusChoice.getSelectionModel().getSelectedItem();
             String notes = notesTXTAREA.getText();
 
-//            Applications application = new Applications(name, date, status, notes);
+
 
             String insert = "INSERT INTO Applications (CompanyName,Date,Status,Notes) VALUES (?,?,?,?)";
             PreparedStatement ps = InitCon.connection.prepareStatement(insert);
             ps.setString(1,name);
             //TODO: Fix this to add combo-box. Need to add the values there first.
             // The date might be able to autopopulate or use user data.
-            ps.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
+            ps.setDate(2, java.sql.Date.valueOf(date));
             ps.setString(3, status);
             ps.setString(4, notes);
             ps.executeUpdate();
