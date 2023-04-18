@@ -102,6 +102,7 @@ public class AddViewController implements Initializable {
        statusList.add("Call Back");
        statusList.add("Interview");
        statusList.add("Offer");
+       statusList.add("Rejected");
 
        statusChoice.setValue("None"); // Default value for the status will always be none
        statusChoice.setItems(statusList);

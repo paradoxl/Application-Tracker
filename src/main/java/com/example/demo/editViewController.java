@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +24,7 @@ public class editViewController implements Initializable {
     @FXML
     public ComboBox<?> dateCOMBO;
     @FXML
-    public TextField statusTEXTFLD;
+    public ChoiceBox<String> statusChoice;
     @FXML
     public TextArea notesTXTAREA;
     @FXML
@@ -41,7 +42,7 @@ public class editViewController implements Initializable {
             PreparedStatement ps = InitCon.connection.prepareStatement(query);
             ps.setInt(4, Integer.parseInt(idLabel.getText()));
             ps.setString(1, companyNameTXTFLD.getText());
-            ps.setString(2, statusTEXTFLD.getText());
+            ps.setString(2, statusChoice.getSelectionModel().getSelectedItem());
             ps.setString(3, notesTXTAREA.getText());
             ps.executeUpdate();
 
@@ -75,7 +76,13 @@ public class editViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        ObservableList<String> statusList = FXCollections.observableArrayList();
+        statusList.add("None");
+        statusList.add("Call Back");
+        statusList.add("Interview");
+        statusList.add("Offer");
+        statusList.add("Rejected");
+        statusChoice.setItems(statusList);
     }
 
     public void populate(Applications selected) throws SQLException {
@@ -89,7 +96,7 @@ public class editViewController implements Initializable {
         companyNameTXTFLD.setText(companyName);
         //TODO: Implement a combo box for the date.
         //dateCOMBO.setItems();
-        statusTEXTFLD.setText(status);
+        statusChoice.setValue(status);
         notesTXTAREA.setText(notes);
     }
 }
