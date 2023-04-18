@@ -40,6 +40,7 @@ public class AddViewController {
             PreparedStatement ps = InitCon.connection.prepareStatement(insert);
             ps.setString(1,name);
             //TODO: Fix this to add combo-box. Need to add the values there first.
+            // The date might be able to autopopulate or use user data.
             ps.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
             ps.setString(3, status);
             ps.setString(4, notes);

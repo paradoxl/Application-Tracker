@@ -17,7 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-
+//TODO: Possible additions add ability to track Outisde URL Username and password for each individual application.
 public class MainViewController implements Initializable {
     @FXML
     public TableView<Applications> mainTableView;
@@ -31,7 +31,10 @@ public class MainViewController implements Initializable {
     public TableColumn<?,?> statusTC;
     @FXML
     public TableColumn<?,?> notesTC;
-
+    @FXML
+    public Label callBackLabel;
+    @FXML
+    public Label interviewLabel;
 
 
     @SuppressWarnings("unchecked")
@@ -52,7 +55,30 @@ public class MainViewController implements Initializable {
         }
 
     }
+    public void manipulateStats() throws SQLException {
+        //TODO: Create a method that will update the percentages based on callbacks and interviews.
+        // Color code the values <25% == red >25>50 == yellow >50 == Green
 
+        ObservableList<Applications> allApps = ApplicationDAO.getApplications();
+        int total = 0;
+        int noCall = 0;
+        int call = 0;
+        int interview = 0;
+        for (Applications app : allApps){
+            total++;
+            if(app.getStatus().equals("None")){
+                noCall++;
+            }
+            if(app.getStatus().equals("Call")){
+                call++;
+            }
+            if(app.getStatus().equals("Interview")){
+                interview++;
+            }
+
+        }
+
+    }
     public void addApplication(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("add_view.fxml"));
         Scene scene = new Scene(loader.load());
@@ -85,6 +111,21 @@ public class MainViewController implements Initializable {
 
     }
 
-    public void editApplication(ActionEvent actionEvent) {
+    public void editApplication(ActionEvent actionEvent) throws IOException, SQLException {
+        Alert NothingSelected = new Alert(Alert.AlertType.ERROR, "You have no selected an Application to edit.", ButtonType.OK);
+        Applications selected = mainTableView.getSelectionModel().getSelectedItem();
+
+        if(selected == null){
+            NothingSelected.showAndWait();
+        }
+
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("edit_view.fxml"));
+        Scene scene = new Scene(loader.load());
+        editViewController helper = loader.getController();
+        helper.populate(selected);
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        stage.setTitle("Customer Records");
+        stage.setScene(scene);
+        stage.show();
     }
 }
