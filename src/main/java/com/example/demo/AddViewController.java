@@ -12,6 +12,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +24,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -44,11 +49,12 @@ public class AddViewController implements Initializable {
     /**
      * This method will save documents to the mySQL database
      * confirmation will be provided before writing.
+     * Issues: One way encrpytion of password requires something to check against.
      * @param actionEvent
      * @throws SQLException
      * @throws IOException
      */
-    public void saveBTNPRESS(ActionEvent actionEvent) throws SQLException, IOException {
+    public void saveBTNPRESS(ActionEvent actionEvent) throws SQLException, IOException, NoSuchAlgorithmException {
         Alert save = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to save this application", ButtonType.YES, ButtonType.NO);
         save.showAndWait();
 
@@ -62,7 +68,7 @@ public class AddViewController implements Initializable {
 
 
 
-            String insert = "INSERT INTO Applications (CompanyName,Date,Status,Notes) VALUES (?,?,?,?)";
+            String insert = "INSERT INTO Applications (CompanyName,Date,Status,Notes,URL,Username,Password) VALUES (?,?,?,?,?,?,?)";
             PreparedStatement ps = InitCon.connection.prepareStatement(insert);
             ps.setString(1,name);
             //TODO: Fix this to add combo-box. Need to add the values there first.
@@ -70,6 +76,27 @@ public class AddViewController implements Initializable {
             ps.setDate(2, java.sql.Date.valueOf(date));
             ps.setString(3, status);
             ps.setString(4, notes);
+            ps.setString(5,urlTextFLD.getText());
+            ps.setString(6,userNameTextFLD.getText());
+
+            // This is one way encrpytion. I would need a way to check a password against it.
+            // less worried about plaintext in the application itself
+            // main issue is plaintext in database given url and username also provided.
+
+
+//            SecureRandom rand = new SecureRandom();
+//            byte[] salt = new byte[16];
+//            rand.nextBytes(salt);
+//
+//            MessageDigest md = MessageDigest.getInstance("SHA-512");
+//            md.update(salt);
+//
+//            byte[] hashed = md.digest(passwordTextFLD.getText().getBytes(StandardCharsets.UTF_8));
+//
+//            ps.setString(7, Arrays.toString(hashed));
+
+
+
             ps.executeUpdate();
 
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("Main_View.fxml"));

@@ -9,14 +9,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.util.*;
+
 //TODO: Possible additions add ability to track Outisde URL Username and password for each individual application.
 //TODO: Possible additions: add an automatic ghost after applicaiton is set to no response for a certain amount of time.
 public class MainViewController implements Initializable {
@@ -50,6 +52,7 @@ public class MainViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             manipulateStats();
+            automaticGhosting();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -62,6 +65,7 @@ public class MainViewController implements Initializable {
             dateTC.setCellValueFactory(new PropertyValueFactory<>("Date"));
             statusTC.setCellValueFactory(new PropertyValueFactory<>("Status"));
             notesTC.setCellValueFactory(new PropertyValueFactory<>("Notes"));
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -80,14 +84,15 @@ public class MainViewController implements Initializable {
 
         ObservableList<Applications> allApps = ApplicationDAO.getApplications();
         float total = 0;
-        float noCall = 0;
+        float ghost = 0;
         float call = 0;
         float interview = 0;
         float reject = 0;
         for (Applications app : allApps){
             total++;
-            if(app.getStatus().equals("None") || app.getStatus().equals("Ghosted")){
-                noCall++;
+
+            if(app.getStatus().equals("Ghosted")){
+                ghost++;
             }
             if(app.getStatus().equals("Call Back")){
                 call++;
@@ -103,13 +108,38 @@ public class MainViewController implements Initializable {
         float callbackPercentage = (call/total) * 100;
         float InterviewPercentage = (interview/total) * 100;
         float RejectionPercentage = (reject/total) * 100;
-        float ghostPercentage = (noCall/total) * 100;
+        float ghostPercentage = (ghost/total) * 100;
 
         callBackLabel.setText(String.format("%.0f%%",callbackPercentage));
         interviewLabel.setText(String.format("%.0f%%",InterviewPercentage));
         rejectionLabel.setText(String.format("%.0f%%",RejectionPercentage));
         ghostLabel.setText(String.format("%.0f%%",ghostPercentage));
 
+
+    }
+
+    /**
+     * This method will determine if applications have become stale.
+     * if the application was sent 30 days previously with no response. The system will automatically update to Ghosted.
+     * @throws SQLException
+     */
+    public void automaticGhosting() throws SQLException {
+        ObservableList<Applications> allApps = ApplicationDAO.getApplications();
+
+        for (Applications app : allApps){
+        LocalDate date = app.getDate();
+        LocalDate ghostSwitch = date.plusDays(30);
+
+        if(LocalDate.now().isAfter(ghostSwitch) && app.getStatus().equals("None")){
+            String query = "Update Applications Set Status = ? Where ApplicationId = ?";
+            PreparedStatement ps = InitCon.connection.prepareStatement(query);
+            ps.setString(1, "Ghosted");
+            ps.setInt(2, app.getApplicationID());
+            ps.executeUpdate();
+        }
+
+
+        }
 
     }
 
@@ -167,18 +197,40 @@ public class MainViewController implements Initializable {
     public void editApplication(ActionEvent actionEvent) throws IOException, SQLException {
         try {
             Applications selected = mainTableView.getSelectionModel().getSelectedItem();
+            System.out.println(selected);
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("edit_view.fxml"));
             Scene scene = new Scene(loader.load());
             editViewController helper = loader.getController();
             helper.populate(selected);
             Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            stage.setTitle("Customer Records");
+            stage.setTitle("Edit Application");
             stage.setScene(scene);
             stage.show();
         }
         catch (NullPointerException e){
             Alert NothingSelected = new Alert(Alert.AlertType.ERROR, "You have no selected an Application to edit.", ButtonType.OK);
             NothingSelected.showAndWait();
+            e.printStackTrace();
         }
+    }
+
+
+
+    public void openEditFromClick(MouseEvent mouseEvent) throws IOException, SQLException {
+        try {
+            Applications selected = mainTableView.getSelectionModel().getSelectedItem();
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("edit_view.fxml"));
+            Scene scene = new Scene(loader.load());
+            editViewController helper = loader.getController();
+            helper.populate(selected);
+            Stage stage = (Stage) ((TableView<Applications>) mouseEvent.getSource()).getScene().getWindow();
+            stage.setTitle("Edit Application");
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch (Exception NullPointerExection){
+            System.out.println("Not actually clicking on anything");
+        }
+
     }
 }

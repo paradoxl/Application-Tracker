@@ -23,8 +23,10 @@ public class ApplicationDAO {
             String companyName = rs.getString("CompanyName");
             String status = rs.getString("Status");
             String notes = rs.getString("Notes");
+            LocalDate date = rs.getDate("Date").toLocalDate();
+            String URL = rs.getString("URL");
 
-            Applications input = new Applications(companyName, Date.valueOf(LocalDate.now()),status,notes);
+            Applications input = new Applications(companyName,date,status,notes,URL);
             input.setApplicationID(applicationID);
             applicationsList.add(input);
         }

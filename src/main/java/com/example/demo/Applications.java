@@ -1,20 +1,23 @@
 package com.example.demo;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Applications {
     private int applicationID;
     private String companyName;
-    private Date date;
+    private LocalDate date;
     private String Status;
     private String Notes;
+    private String URL;
 
 
-    public Applications (String companyName, Date date, String Status, String Notes){
+
+    public Applications (String companyName, LocalDate date, String Status, String Notes, String URL){
         this.companyName = companyName;
         this.date = date;
         this.Status = Status;
         this.Notes = Notes;
+        this.URL = URL;
     }
 
     public void setApplicationID(int applicationID) {
@@ -37,7 +40,7 @@ public class Applications {
         date = date;
     }
 
-    public Date getDate() {
+    public  LocalDate getDate() {
         return date;
     }
 
@@ -56,4 +59,13 @@ public class Applications {
     public String getNotes() {
         return Notes;
     }
+
+    public void setURL(String URL) {
+        this.URL = URL;
+    }
+
+    public String getURL() {
+        return URL;
+    }
+
 }

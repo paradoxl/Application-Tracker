@@ -10,7 +10,7 @@
    <children>
       <Label layoutX="419.0" layoutY="48.0" text="Current Applications" />
       <Button layoutX="106.0" layoutY="646.0" mnemonicParsing="false" onAction="#addApplication" text="Add Application" />
-      <TableView fx:id="mainTableView" layoutX="106.0" layoutY="77.0" prefHeight="501.0" prefWidth="760.0">
+      <TableView onMouseClicked="#openEditFromClick" fx:id="mainTableView" layoutX="106.0" layoutY="77.0" prefHeight="501.0" prefWidth="760.0">
         <columns>
           <TableColumn fx:id="applicationIDTC" prefWidth="124.0" text="Application ID" />
           <TableColumn fx:id="comapnyNameTC" minWidth="7.0" prefWidth="155.0" text="Company Name" />

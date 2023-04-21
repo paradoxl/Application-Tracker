@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -12,11 +12,14 @@
     <children>
         <Button layoutX="119.0" layoutY="369.0" mnemonicParsing="false" onAction="#saveBTNPRESS" text="Save" />
         <Button layoutX="50.0" layoutY="369.0" mnemonicParsing="false" onAction="#backBTNPRESS" text="Back" />
-        <TextField fx:id="companyNameTXTFLD" layoutX="50.0" layoutY="57.0" promptText="Company Name" />
-        <ComboBox fx:id="dateCOMBO" layoutX="50.0" layoutY="132.0" prefWidth="150.0" promptText="Date Submitted" />
+        <TextField fx:id="companyNameTXTFLD" layoutX="40.0" layoutY="75.0" promptText="Company Name" />
         <TextArea fx:id="notesTXTAREA" layoutX="253.0" layoutY="51.0" prefHeight="478.0" prefWidth="471.0" wrapText="true" />
         <Label layoutX="262.0" layoutY="27.0" text="Notes" />
-      <Label fx:id="idLabel" layoutX="89.0" layoutY="290.0" opacity="0.0" text="ID" />
-      <ChoiceBox fx:id="statusChoice" layoutX="50.0" layoutY="225.0" prefWidth="150.0" />
+        <ChoiceBox fx:id="statusChoice" layoutX="37.0" layoutY="164.0" prefWidth="150.0" />
+        <DatePicker fx:id="datePicker" layoutX="37.0" layoutY="118.0" promptText="Date Applied" />
+        <TextField fx:id="urlTextFLD" layoutX="34.0" layoutY="211.0" promptText="URL" />
+        <TextField fx:id="userNameTextFLD" layoutX="34.0" layoutY="253.0" promptText="Username" />
+        <TextField fx:id="passwordTextFLD" layoutX="34.0" layoutY="290.0" promptText="Password" />
+      <Label fx:id="idLabel" layoutX="75.0" layoutY="482.0" opacity="0.0" text="Label" />
     </children>
 </AnchorPane>
