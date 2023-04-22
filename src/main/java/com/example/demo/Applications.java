@@ -2,6 +2,9 @@ package com.example.demo;
 
 import java.time.LocalDate;
 
+/**
+ * This class is used to store information pertaining to applications.
+ */
 public class Applications {
     private int applicationID;
     private String companyName;

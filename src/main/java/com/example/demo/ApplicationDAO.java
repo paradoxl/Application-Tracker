@@ -9,6 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * This method is used to import data from mySQL into java objects
+ */
 public class ApplicationDAO {
 
 

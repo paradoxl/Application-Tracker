@@ -68,7 +68,7 @@ public class AddViewController implements Initializable {
 
 
 
-            String insert = "INSERT INTO Applications (CompanyName,Date,Status,Notes,URL,Username,Password) VALUES (?,?,?,?,?,?,?)";
+            String insert = "INSERT INTO Applications (CompanyName,Date,Status,Notes,URL) VALUES (?,?,?,?,?)";
             PreparedStatement ps = InitCon.connection.prepareStatement(insert);
             ps.setString(1,name);
             //TODO: Fix this to add combo-box. Need to add the values there first.
@@ -76,27 +76,12 @@ public class AddViewController implements Initializable {
             ps.setDate(2, java.sql.Date.valueOf(date));
             ps.setString(3, status);
             ps.setString(4, notes);
-            ps.setString(5,urlTextFLD.getText());
-            ps.setString(6,userNameTextFLD.getText());
-
-            // This is one way encrpytion. I would need a way to check a password against it.
-            // less worried about plaintext in the application itself
-            // main issue is plaintext in database given url and username also provided.
-
-
-//            SecureRandom rand = new SecureRandom();
-//            byte[] salt = new byte[16];
-//            rand.nextBytes(salt);
-//
-//            MessageDigest md = MessageDigest.getInstance("SHA-512");
-//            md.update(salt);
-//
-//            byte[] hashed = md.digest(passwordTextFLD.getText().getBytes(StandardCharsets.UTF_8));
-//
-//            ps.setString(7, Arrays.toString(hashed));
-
-
-
+            if (urlTextFLD.getText().isEmpty()){
+                ps.setString(5,"No URL available");
+            }
+            else {
+                ps.setString(5, urlTextFLD.getText());
+            }
             ps.executeUpdate();
 
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("Main_View.fxml"));

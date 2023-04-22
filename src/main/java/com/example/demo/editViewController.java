@@ -42,6 +42,14 @@ public class editViewController implements Initializable {
     @FXML
     public TextField passwordTextFLD;
 
+    /**
+     * This method will save all current values in each field.
+     * parameterized inputs will prevent Sql injection
+     * @param actionEvent
+     * @throws SQLException
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     */
     public void saveBTNPRESS(ActionEvent actionEvent) throws SQLException, IOException, NoSuchAlgorithmException {
         Alert continueSave = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to update this application", ButtonType.YES,ButtonType.NO);
         continueSave.showAndWait();
@@ -83,6 +91,11 @@ public class editViewController implements Initializable {
 
     }
 
+    /**
+     * This method will return the user back to the main screen.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void backBTNPRESS(ActionEvent actionEvent) throws IOException {
         Alert back = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you wish to exit?", ButtonType.YES,ButtonType.NO);
         back.showAndWait();
@@ -98,6 +111,11 @@ public class editViewController implements Initializable {
       
     }
 
+    /**
+     * Initializes the values within the status box.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<String> statusList = FXCollections.observableArrayList();
@@ -110,6 +128,11 @@ public class editViewController implements Initializable {
         statusChoice.setItems(statusList);
     }
 
+    /**
+     * Populates all fields with values based on selected application.
+     * @param selected
+     * @throws SQLException
+     */
     public void populate(Applications selected) throws SQLException {
         idLabel.setText(String.valueOf(selected.getApplicationID()));
         companyNameTXTFLD.setText(selected.getCompanyName());

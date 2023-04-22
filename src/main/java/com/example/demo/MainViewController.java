@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -19,8 +20,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
-//TODO: Possible additions add ability to track Outisde URL Username and password for each individual application.
-//TODO: Possible additions: add an automatic ghost after applicaiton is set to no response for a certain amount of time.
+/**
+ * This class is used to control the main screen
+ */
 public class MainViewController implements Initializable {
     @FXML
     public TableView<Applications> mainTableView;
@@ -42,6 +44,8 @@ public class MainViewController implements Initializable {
     public Label rejectionLabel;
     @FXML
     public Label ghostLabel;
+    @FXML
+    public Label noResponse;
 
 
     @SuppressWarnings("unchecked")
@@ -88,11 +92,16 @@ public class MainViewController implements Initializable {
         float call = 0;
         float interview = 0;
         float reject = 0;
+        float none = 0;
+
         for (Applications app : allApps){
             total++;
 
             if(app.getStatus().equals("Ghosted")){
                 ghost++;
+            }
+            if(app.getStatus().equals("None")){
+                none++;
             }
             if(app.getStatus().equals("Call Back")){
                 call++;
@@ -109,11 +118,13 @@ public class MainViewController implements Initializable {
         float InterviewPercentage = (interview/total) * 100;
         float RejectionPercentage = (reject/total) * 100;
         float ghostPercentage = (ghost/total) * 100;
+        float nonePercentage = (none/total) *100;
 
         callBackLabel.setText(String.format("%.0f%%",callbackPercentage));
         interviewLabel.setText(String.format("%.0f%%",InterviewPercentage));
         rejectionLabel.setText(String.format("%.0f%%",RejectionPercentage));
         ghostLabel.setText(String.format("%.0f%%",ghostPercentage));
+        noResponse.setText(String.format("%.0f%%",nonePercentage));
 
 
     }
@@ -215,22 +226,32 @@ public class MainViewController implements Initializable {
     }
 
 
-
+    /**
+     * This method will allow the user to open the edit page by double-clicking on the entry in the table view.
+     * @param mouseEvent
+     * @throws IOException
+     * @throws SQLException
+     */
     public void openEditFromClick(MouseEvent mouseEvent) throws IOException, SQLException {
         try {
-            Applications selected = mainTableView.getSelectionModel().getSelectedItem();
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("edit_view.fxml"));
-            Scene scene = new Scene(loader.load());
-            editViewController helper = loader.getController();
-            helper.populate(selected);
-            Stage stage = (Stage) ((TableView<Applications>) mouseEvent.getSource()).getScene().getWindow();
-            stage.setTitle("Edit Application");
-            stage.setScene(scene);
-            stage.show();
-        }
-        catch (Exception NullPointerExection){
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+
+                    Applications selected = mainTableView.getSelectionModel().getSelectedItem();
+                    FXMLLoader loader = new FXMLLoader(Main.class.getResource("edit_view.fxml"));
+                    Scene scene = new Scene(loader.load());
+                    editViewController helper = loader.getController();
+                    helper.populate(selected);
+                    Stage stage = (Stage) ((TableView<Applications>) mouseEvent.getSource()).getScene().getWindow();
+                    stage.setTitle("Edit Application");
+                    stage.setScene(scene);
+                    stage.show();
+                }
+            }
+        } catch (Exception NullPointerExection) {
             System.out.println("Not actually clicking on anything");
         }
+
 
     }
 }
