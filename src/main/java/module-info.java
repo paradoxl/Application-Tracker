@@ -4,6 +4,7 @@ module com.example.demo {
 
     requires org.controlsfx.controls;
     requires java.sql;
+    requires org.jsoup;
 
     opens com.example.demo to javafx.fxml;
     exports com.example.demo;

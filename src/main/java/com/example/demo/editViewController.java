@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +10,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.URL;
@@ -109,6 +114,24 @@ public class editViewController implements Initializable {
             stage.show();
         }
       
+    }
+
+    public void getJobData(ActionEvent actionEvent) {
+
+        Alert wip = new Alert(Alert.AlertType.INFORMATION, "This feature is currently under development",ButtonType.CLOSE);
+        wip.showAndWait();
+  /*      Document doc;
+        ObservableList<String> skillsList = FXCollections.observableArrayList();
+
+        try{
+            doc = Jsoup.connect("https://www.lockheedmartinjobs.com/job/fort-worth/data-analyst-early-career/694/35461191456").get();
+            Elements skills = doc.select("<p id=\"collapsible-locations\" class=\"ajd_header__location locations-collapsed js-after-selector-hidden\">Fort Worth, Texas</p>");
+            skillsList.add(String.valueOf(skills));
+            System.out.println(skillsList);
+        }
+        catch (IOException e){
+            throw  new RuntimeException(e);
+        }*/
     }
 
     /**

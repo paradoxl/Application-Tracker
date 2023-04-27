@@ -14,5 +14,6 @@
         <DatePicker fx:id="datePicker" layoutX="28.0" layoutY="203.0" promptText="Date Applied" />
         <TextField fx:id="urlTextFLD" layoutX="38.0" layoutY="290.0" promptText="URL" />
       <Label fx:id="idLabel" layoutX="75.0" layoutY="482.0" opacity="0.0" text="Label" />
+      <Button onAction="#getJobData" layoutX="76.0" layoutY="478.0" mnemonicParsing="false" text="Job Details" />
     </children>
 </AnchorPane>
